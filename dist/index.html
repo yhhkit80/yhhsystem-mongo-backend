@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
@@ -13,54 +14,56 @@
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<meta name="format-detection" content="telephone=no">
 		<meta http-equiv="x-rim-auto-match" content="none">
-		
+
 	</head>
+
 	<body>
 		<h3>测试</h3>
-		
+
 		<button onclick="goBack()">返回小程序页面</button><br />
 		<button onclick="goBackToLog()">跳转小程序日志页面</button><br />
 		<button onclick="getUserInfo()">获取用户信息</button>
 		<p id="res"></p>
 		<!--<button onclick="getlist()">查询列表</button><br />
 		<button onclick="login()">登录</button>-->
-		
-		
-		
+
 		<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.3.2.js"></script>
 
 		<script src="js/jquery-2.1.4.js" type="text/javascript" charset="utf-8"></script>
 		<script>
-			function login(){
-				$.post("/api/login/getToken",{
-					user_id:"admin",
-					password:"admin888"
-				}, function(res){
+			function login() {
+				$.post("/api/login/getToken", {
+					user_id: "admin",
+					password: "admin888"
+				}, function(res) {
 					console.log(res)
 				})
 			}
-			function getlist(){
-				$.get("/api/users/getUserList", function(res){
+
+			function getlist() {
+				$.get("/api/users/getUserList", function(res) {
 					console.log(res)
 				})
 			}
-			function goBack(){
-				wx.miniProgram.navigateBack( )
+
+			function goBack() {
+				wx.miniProgram.navigateBack()
 			}
-			function goBackToLog(){
-				console.log(111)
-				wx.miniProgram.navigateTo("pages/logs/logs" )
+
+			function goBackToLog() {
+				wx.miniProgram.navigateTo("/pages/logs/logs")
 			}
-			function getUserInfo(){
-				console.log(222)
-				wx.getUserInfo({
-            success: function(res) {
-              // 可以将 res 发送给后台解码出 unionId
-              console.log(res)
-              $('#res').html(JSON.stringify(res))
-            }
-          })
+
+			function getUserInfo() {
+				wx.miniProgram.getUserInfo({
+					success: function(res) {
+						// 可以将 res 发送给后台解码出 unionId
+						//console.log(res)
+						$('#res').html(res?JSON.stringify(res):"无")
+					}
+				})
 			}
 		</script>
 	</body>
+
 </html>
