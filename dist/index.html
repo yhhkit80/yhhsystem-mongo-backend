@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/style.css"/>
+		<script src="js/jquery-2.1.4.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<h3>测试</h3>
+		<button onclick="getlist()">查询列表</button><br />
+		<button onclick="login()">登录</button>
+		
+		<script>
+			function login(){
+				$.post("/api/login/getToken",{
+					user_id:"admin",
+					password:"admin888"
+				}, function(res){
+					console.log(res)
+				})
+			}
+			function getlist(){
+				console.log(11)
+				$.get("/api/users/getUserList", function(res){
+					console.log(res)
+				})
+			}
+		</script>
+	</body>
+</html>
