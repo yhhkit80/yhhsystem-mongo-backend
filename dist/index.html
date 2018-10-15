@@ -17,6 +17,9 @@
 	</head>
 	<body>
 		<h3>测试</h3>
+		
+		<button onclick="goBack()">返回小程序页面</button><br />
+		<button onclick="goBackToLog">跳转小程序日志页面</button>
 		<!--<button onclick="getlist()">查询列表</button><br />
 		<button onclick="login()">登录</button>-->
 		
@@ -39,6 +42,12 @@
 				$.get("/api/users/getUserList", function(res){
 					console.log(res)
 				})
+			}
+			function goBack(){
+				wx.miniProgram.navigateBack( )
+			}
+			function goBackToLog(){
+				wx.miniProgram.navigateTo("pages/logs/logs" )
 			}
 		</script>
 	</body>
