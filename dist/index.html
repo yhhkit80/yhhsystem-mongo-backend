@@ -19,7 +19,9 @@
 		<h3>测试</h3>
 		
 		<button onclick="goBack()">返回小程序页面</button><br />
-		<button onclick="goBackToLog">跳转小程序日志页面</button>
+		<button onclick="goBackToLog()">跳转小程序日志页面</button><br />
+		<button onclick="getUserInfo()">获取用户信息</button>
+		<p id="res"></p>
 		<!--<button onclick="getlist()">查询列表</button><br />
 		<button onclick="login()">登录</button>-->
 		
@@ -38,7 +40,6 @@
 				})
 			}
 			function getlist(){
-				console.log(11)
 				$.get("/api/users/getUserList", function(res){
 					console.log(res)
 				})
@@ -49,6 +50,16 @@
 			function goBackToLog(){
 				console.log(111)
 				wx.miniProgram.navigateTo("pages/logs/logs" )
+			}
+			function getUserInfo(){
+				console.log(222)
+				wx.getUserInfo({
+            success: function(res) {
+              // 可以将 res 发送给后台解码出 unionId
+              console.log(res)
+              $('#res').html(JSON.stringify(res))
+            }
+          })
 			}
 		</script>
 	</body>
