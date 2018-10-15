@@ -55,13 +55,7 @@
 			}
 
 			function getUserInfo() {
-				wx.miniProgram.getUserInfo({
-					success: function(res) {
-						// 可以将 res 发送给后台解码出 unionId
-						//console.log(res)
-						$('#res').html(res?JSON.stringify(res):"无")
-					}
-				})
+				wx.miniProgram.postMessage({ msg:"我是网页" })
 			}
 		</script>
 	</body>
