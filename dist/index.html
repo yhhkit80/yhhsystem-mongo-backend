@@ -27,6 +27,7 @@
 		<button id="reLaunch">reLaunch</button><br />
 		<button id="redirectTo">redirectTo</button><br />
 		<button id="switchTab">switchTab</button><br />
+		<button id="pay">pay</button><br />
 
 		<p id="res"></p>
 		<!--<button onclick="getlist()">查询列表</button><br />
@@ -120,6 +121,17 @@
 						}
 					})
 				});
+				$('#pay').on('click', function(){
+					var isWxMini = window.__wxjs_environment === 'miniprogram'
+					console.log('isWxMin':isWxMini)
+					if (isWxMini) {
+    var jumpUrl = encodeURIComponent(window.location)
+    var path = `/page/pay/pay?amount=${amount}&title=${desc}&jumpUrl=${jumpUrl}`
+    window.wx.miniProgram.navigateTo({
+        url: path
+    })
+ }
+				})
 			})
 		</script>
 	</body>
