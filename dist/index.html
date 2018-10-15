@@ -78,9 +78,14 @@
 						data: {
 							foo: 'bar'
 						},
-						complete: function() {
-							console.log('postMessage调用结束');
-							$('#res').append('<p>postMessage调用结束</p>')
+						success: function(res) {
+							$('#res').append('<p>postMessage调用成功' + JSON.stringify(res) + '</p>')
+						},
+						fail: function(res) {
+							$('#res').append('<p>postMessage调用失败' + JSON.stringify(res) + '</p>')
+						},
+						complete: function(res) {
+							$('#res').append('<p>postMessage调用结束' + JSON.stringify(res) + '</p>')
 						}
 					})
 				})
@@ -91,7 +96,7 @@
 							console.log('reLaunch调用结束');
 							$('#res').append('<p>reLaunch调用结束</p>')
 						}
-					}); //关闭所有页面，打开到应用内的某个页面。
+					}); //关闭所有页面，打开到应用内的某个页面。不会有返回上一页按钮
 					/**
 					 * 参数	    	 类型						必填					说明
 					 * url			String				是				需要跳转的应用内页面路径 , 路径后可以带参数。参数与路径之间使用?分隔，参数键与参数值用=相连，不同参数用&分隔；如 'path?key=value&key2=value2'，如果跳转的页面路径是 tabBar 页面则不能带参数
