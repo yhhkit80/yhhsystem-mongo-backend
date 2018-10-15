@@ -20,9 +20,14 @@
 	<body>
 		<h3>测试</h3>
 
-		<button onclick="goBack()">返回小程序页面</button><br />
-		<button onclick="goBackToLog()">跳转小程序日志页面</button><br />
-		<button onclick="getUserInfo()">获取用户信息</button>
+		<button id="getEnv">getEnv</button><br />
+		<button id="navigateBack">navigateBack</button><br />
+		<button id="navigateTo">navigateTo</button><br />
+		<button id="postMessage">postMessage</button><br />
+		<button id="reLaunch">reLaunch</button><br />
+		<button id="redirectTo">redirectTo</button><br />
+		<button id="switchTab">switchTab</button><br />
+
 		<p id="res"></p>
 		<!--<button onclick="getlist()">查询列表</button><br />
 		<button onclick="login()">登录</button>-->
@@ -46,17 +51,71 @@
 				})
 			}
 
-			function goBack() {
-				wx.miniProgram.navigateBack()
+			function ready() {
+				console.log('是否在小程序环境：' + window.__wxjs_environment === 'miniprogram') // true
 			}
-
-			function goBackToLog() {
-				wx.miniProgram.navigateTo({url:"/pages/logs/logs"})
-			}
-
-			function getUserInfo() {
-				wx.miniProgram.postMessage({ data:"我是网页" })
-			}
+			$(function() {
+				ready()
+				$('#getEnv').on('click', function() {
+					wx.miniProgram.getEnv(function(res) {
+						console.log(res.miniprogram) // true
+						$('#res').append('<p>' + JSON.stringify(res) + '</p>')
+					})
+				})
+				$('#navigateBack').on('click', function() {
+					wx.miniProgram.navigateBack()
+				})
+				$('#navigateTo').on('click', function() {
+					wx.miniProgram.navigateTo({
+						url: "/pages/logs/logs"
+					})
+				})
+				$('#postMessage').on('click', function() {
+					wx.miniProgram.postMessage({
+						data: 'foo'
+					})
+					wx.miniProgram.postMessage({
+						data: {
+							foo: 'bar'
+						},
+						complete: function() {
+							console.log('postMessage调用结束');
+							$('#res').append('<p>postMessage调用结束</p>')
+						}
+					})
+				})
+				$('#reLaunch').on('click', function() {
+					wx.miniProgram.reLaunch({
+						url: "/pages/logs/logs",
+						complete: function() {
+							console.log('reLaunch调用结束');
+							$('#res').append('<p>reLaunch调用结束</p>')
+						}
+					}); //关闭所有页面，打开到应用内的某个页面。
+					/**
+					 * 参数	    	 类型						必填					说明
+					 * url			String				是				需要跳转的应用内页面路径 , 路径后可以带参数。参数与路径之间使用?分隔，参数键与参数值用=相连，不同参数用&分隔；如 'path?key=value&key2=value2'，如果跳转的页面路径是 tabBar 页面则不能带参数
+					 * success	Function			否				接口调用成功的回调函数
+					 * fail			Function			否				接口调用失败的回调函数
+					 * complete	Function			否				接口调用结束的回调函数（调用成功、失败都会执行）*/
+				})
+				$('#redirectTo').on('click', function() {
+					wx.miniProgram.redirectTo({
+						url: "/pages/logs/logs",
+						complete: function(res) {
+							$('#res').append('<p>' + JSON.stringify(res) + '</p>')
+						}
+					})
+				})
+				$('#switchTab').on('click', function() {
+					wx.miniProgram.switchTab({
+						url: "/pages/logs/logs",
+						complete: function(res) {
+							$('#res').append('<p>' + JSON.stringify(res) + '</p>')
+						}
+					})
+				});
+			})
 		</script>
 	</body>
 
