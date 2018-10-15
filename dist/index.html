@@ -19,25 +19,12 @@
 
 	<body>
 		<h3>测试</h3>
-		<div id="userInfo" style="display:none">
-			<span id="nickName"></span><img id="avatarUrl" src=""/>
-		</div>
-		<div id="notLogin" style="display:none">用户未登录</div>
 
-		<button id="getEnv">getEnv</button><br />
-		<button id="navigateBack">navigateBack</button><br />
-		<button id="navigateTo">navigateTo</button><br />
-		<button id="postMessage">postMessage</button><br />
-		<button id="reLaunch">reLaunch</button><br />
-		<button id="redirectTo">redirectTo</button><br />
-		<button id="switchTab">switchTab</button><br />
-		<button id="pay">pay</button><br />
 
 		<p id="res"></p>
-		<!--<button onclick="getlist()">查询列表</button><br />
-		<button onclick="login()">登录</button>-->
+		<button onclick="getlist()">查询列表</button><br />
+		<button onclick="login()">登录</button>
 
-		<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.3.2.js"></script>
 
 		<script src="js/jquery-2.1.4.js" type="text/javascript" charset="utf-8"></script>
 		<script>
@@ -47,120 +34,32 @@
 					password: "admin888"
 				}, function(res) {
 					console.log(res)
+					$('#res').append('<p>'+JSON.stringify(res)+'</p>')
 				})
 			}
 
 			function getlist() {
 				$.get("/api/users/getUserList", function(res) {
 					console.log(res)
+					$('#res').append('<p>'+JSON.stringify(res)+'</p>')
 				})
 			}
-function getparam() {
-		var query = location.search.substring(1);
-		var values = query.split("&"); //字符串分隔
-		var param = {};
-		for(var i = 0; i < values.length; i++) {
-			var pos = values[i].indexOf('=');
-			if(pos == -1) continue;
-			var paramname = values[i].substring(0, pos);
-			var value = values[i].substring(pos + 1);
-			param[paramname] = decodeURIComponent(value);
-		}
-		return param; //返回参数对象
-	}
-			function ready() {
-				console.log('是否在小程序环境：' + window.__wxjs_environment === 'miniprogram') // true
-				var param = getparam();
-				if(param.nickName){
-					$('#notLogin').hide();
-					$('#userInfo').show();
-					$('#nickName').text(param.nickName);
-					$('#avatarUrl').attr('src',param.avatarUrl)
-				}else {
-					$('#userInfo').hide();
-					$('#notLogin').show();
+
+			function getparam() {
+				var query = location.search.substring(1);
+				var values = query.split("&"); //字符串分隔
+				var param = {};
+				for(var i = 0; i < values.length; i++) {
+					var pos = values[i].indexOf('=');
+					if(pos == -1) continue;
+					var paramname = values[i].substring(0, pos);
+					var value = values[i].substring(pos + 1);
+					param[paramname] = decodeURIComponent(value);
 				}
-				
+				return param; //返回参数对象
 			}
-			$(function() {
-				ready()
-				$('#getEnv').on('click', function() {
-					wx.miniProgram.getEnv(function(res) {
-						console.log(res.miniprogram) // true
-						$('#res').append('<p>' + JSON.stringify(res) + '</p>')
-					})
-				})
-				$('#navigateBack').on('click', function() {
-					wx.miniProgram.navigateBack()
-				})
-				$('#navigateTo').on('click', function() {
-					wx.miniProgram.navigateTo({
-						url: "/pages/logs/logs"
-					})
-				})
-				$('#postMessage').on('click', function() {
-					wx.miniProgram.postMessage({
-						data: 'foo'
-					})
-					wx.miniProgram.postMessage({
-						data: {
-							foo: 'bar'
-						},
-						success: function(res) {
-							$('#res').append('<p>postMessage调用成功' + JSON.stringify(res) + '</p>')
-						},
-						fail: function(res) {
-							$('#res').append('<p>postMessage调用失败' + JSON.stringify(res) + '</p>')
-						},
-						complete: function(res) {
-							$('#res').append('<p>postMessage调用结束' + JSON.stringify(res) + '</p>')
-						}
-					})
-				})
-				$('#reLaunch').on('click', function() {
-					wx.miniProgram.reLaunch({
-						url: "/pages/logs/logs",
-						complete: function() {
-							console.log('reLaunch调用结束');
-							$('#res').append('<p>reLaunch调用结束</p>')
-						}
-					}); //关闭所有页面，打开到应用内的某个页面。不会有返回上一页按钮
-					/**
-					 * 参数	    	 类型						必填					说明
-					 * url			String				是				需要跳转的应用内页面路径 , 路径后可以带参数。参数与路径之间使用?分隔，参数键与参数值用=相连，不同参数用&分隔；如 'path?key=value&key2=value2'，如果跳转的页面路径是 tabBar 页面则不能带参数
-					 * success	Function			否				接口调用成功的回调函数
-					 * fail			Function			否				接口调用失败的回调函数
-					 * complete	Function			否				接口调用结束的回调函数（调用成功、失败都会执行）*/
-				})
-				$('#redirectTo').on('click', function() {
-					wx.miniProgram.redirectTo({
-						url: "/pages/logs/logs",
-						complete: function(res) {
-							$('#res').append('<p>' + JSON.stringify(res) + '</p>')
-						}
-					})
-				})
-				$('#switchTab').on('click', function() {
-					wx.miniProgram.switchTab({
-						url: "/pages/logs/logs",
-						complete: function(res) {
-							$('#res').append('<p>' + JSON.stringify(res) + '</p>')
-						}
-					})
-				});
-				$('#pay').on('click', function(){
-					var isWxMini = window.__wxjs_environment === 'miniprogram'
-					console.log('isWxMin:'+isWxMini)
-					if (isWxMini) {
-    var jumpUrl = encodeURIComponent(window.location)
-    var amount = 4567,desc="支付测试"
-    var path = `/page/pay/pay?amount=${amount}&title=${desc}&jumpUrl=${jumpUrl}`
-    window.wx.miniProgram.navigateTo({
-        url: path
-    })
- }
-				})
-			})
+
+			$(function() {})
 		</script>
 	</body>
 
