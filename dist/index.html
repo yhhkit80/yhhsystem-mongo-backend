@@ -153,6 +153,7 @@ function getparam() {
 					console.log('isWxMin:'+isWxMini)
 					if (isWxMini) {
     var jumpUrl = encodeURIComponent(window.location)
+    var amount = 4567,desc="支付测试"
     var path = `/page/pay/pay?amount=${amount}&title=${desc}&jumpUrl=${jumpUrl}`
     window.wx.miniProgram.navigateTo({
         url: path
