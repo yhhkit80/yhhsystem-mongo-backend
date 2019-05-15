@@ -23,7 +23,10 @@
 
 		<p id="res"></p>
 		<button onclick="getlist()">查询列表</button><br />
-		<button onclick="login()">登录</button>
+		<button onclick="login()">登录</button><br />
+		<button onclick="register()">注册</button><br />
+		<button onclick="getInfo()">查询帐号</button><br />
+		<button onclick="deleteuser()">删除用户</button>
 
 
 		<script src="js/jquery-2.1.4.js" type="text/javascript" charset="utf-8"></script>
@@ -40,6 +43,33 @@
 
 			function getlist() {
 				$.get("/api/users/getUserList", function(res) {
+					console.log(res)
+					$('#res').append('<p>'+JSON.stringify(res)+'</p>')
+				})
+			}
+			function register(){
+				$.post("/api/users/register", {
+					user_id: "test123",
+					nickname: "测试人",
+					password: "test123",
+					phone: "13355556666"
+				}, function(res) {
+					console.log(res)
+					$('#res').append('<p>'+JSON.stringify(res)+'</p>')
+				})
+			}
+			function getInfo(){
+                $.post("/api/login/getAccount", {
+                }, function(res) {
+                    console.log(res)
+                    $('#res').append('<p>'+JSON.stringify(res)+'</p>')
+                })
+            }
+			
+			function deleteuser(){
+				$.post("/api/users/delete", {
+					user_id: "test",
+				}, function(res) {
 					console.log(res)
 					$('#res').append('<p>'+JSON.stringify(res)+'</p>')
 				})

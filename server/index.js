@@ -1,5 +1,5 @@
 // 引入编写好的api
-const api = require('./api'); 
+const api = require('./api');
 // 引入文件模块
 const fs = require('fs');
 // 引入处理路径的模块
@@ -10,8 +10,13 @@ const bodyParser = require('body-parser')
 const express = require('express');
 const app = express();
 
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());//处理cookie
+
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
 app.use(api);
 // 访问静态资源文件 这里是访问所有dist目录下的静态资源文件
 app.use(express.static(path.resolve(__dirname, '../dist')))
@@ -21,4 +26,4 @@ app.get('*', function(req, res) {
 })
 // 监听端口
 app.listen(8084);
-console.log('mongo server success listen');
+console.log('mongo server success listen at: 8084');
